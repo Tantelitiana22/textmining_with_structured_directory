@@ -4,6 +4,7 @@ sys.path.append('..')
 
 from gloveLocal.glove import build_vocab,build_cooccur,train_glove
 from gloveLocal.evaluate import make_id2word,merge_main_context
+from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 
 class GloveTransformer:
@@ -38,8 +39,11 @@ class GloveTransformer:
         
         
     def transform(self,X,y=None):
-        return self.__word_averaging(X)
-        
+        X_tranform= self.__word_averaging(X)
+        scaler = MinMaxScaler()
+        scaler.fit( X_tranform)
+        XresMinMax=scaler.transform(X_tranform)    
+        return(XresMinMax)
     
 
     
@@ -64,4 +68,4 @@ if __name__=="__main__":
     testclass=GloveTransformer()
     
     #print(testclass.word_representation(test_corpus))
-    print(testclass.fit(test_corpus).transform(test_corpus).shape)
+    print(testclass.fit(test_corpus).transform(test_corpus))

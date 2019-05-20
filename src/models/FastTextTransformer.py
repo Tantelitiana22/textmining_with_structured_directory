@@ -2,6 +2,7 @@ from gensim.models.wrappers.fasttext import FastText as FT_wrapper
 from gensim.test.utils import datapath
 import numpy as np
 import os 
+import sys
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -15,15 +16,15 @@ class FastTextTransformer:
     This class aim to transform text into numeric vector (for each document) with fasttext.
     To make it work, one need to have the C++ package as requirement. 
     '''
-    def __init__(self,inputFile,ft_home,path_to_data,model="cbow",size=100, word_ngrams=3):
+    def __init__(self,inputFile,ft_home,model="cbow",size=100, word_ngrams=3):
         
         if not os.path.isfile(ft_home) :
             print("Path" ,ft_home,"does not exist")
             sys.exit(1)
         if not os.path.isfile(inputFile) :
-            print("Path" ,ft_home,"does not exist")
+            print("PathToFile" ,inputFile,"does not exist")
             sys.exit(1)
-        corpus_file=datapath(path_to_data)
+        corpus_file=datapath(inputFile)
         
         self.ft_home=ft_home
         self.corpus_file=corpus_file
@@ -33,8 +34,13 @@ class FastTextTransformer:
         self.word_ngrams=word_ngrams
         
         global model_wrapper
-        
-   
+         
+
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+        return self
+    
     def fit(self,X,y=None):
         X.to_csv(self.inputFile,index=False)
         corpus_file=datapath(self.inputFile)

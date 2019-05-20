@@ -18,7 +18,7 @@ class Embedding_Word2Vec:
 
     """
     
-    def __init__(self,n_size,n_window,n_min_count,n_workers,n_sg=1,n_hs=1):
+    def __init__(self,n_window,n_min_count,n_workers,n_size=100,n_sg=1,n_hs=1):
         self.n_size=n_size
         self.n_window=n_window
         self.n_min_count=n_min_count
@@ -26,6 +26,13 @@ class Embedding_Word2Vec:
         self.n_hs=n_hs
         self.n_sg=n_sg
         global model
+
+
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+        return self
+    
     # Calculer la moyenne des mots à patie des vecteurs de mots.
     @staticmethod
     def __word_averaging(self,wv, words):
