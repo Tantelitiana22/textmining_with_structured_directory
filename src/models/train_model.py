@@ -121,5 +121,5 @@ if __name__=="__main__":
     Thread1.start()
     Thread2.start()
 
-    Thread1.stop()
-    Thread2.stop()
+    Thread1.join()
+    Thread2.join()
