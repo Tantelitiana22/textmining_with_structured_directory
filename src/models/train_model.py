@@ -73,8 +73,10 @@ class BestModelFinder(Thread):
 
     """Model with threading to parallelize your luncher."""
 
-    def __init__(self,ListParamModel,path,cv=5,n_jobs=2):
+    def __init__(self,X,Y,ListParamModel,path,cv=5,n_jobs=2):
         Thread.__init__(self)
+        self.X=X
+        self.Y=Y
         self.ListParamModel = ListParamModel
         self.path=path
         self.cv=cv
@@ -90,10 +92,10 @@ class BestModelFinder(Thread):
         modele_name="model_{}_{}.sav".format(model,param)
         pickle.dump( modele, open( path+modele_name, "wb" ) )
 
-    def run(self,X,Y):
+    def run(self):
         cleardata=Cleardataset()
         for mod,par in self.ListParamModel:
-            self.__ApplyModel(X,Y,model=mod,param=par)
+            self.__ApplyModel(self.X,self.Y,model=mod,param=par)
 
 
 
@@ -107,12 +109,17 @@ if __name__=="__main__":
     t1=time.time()
     XtrainClean=Cleardataset().fit(Xtrain).transform(Xtrain)
     print("data cleared in:{}".format(time.time()-t1))
+    
     path_to_modele="/home/tantely/Documents/INSA_Rouen/Projet_Fil_Rouge2/textminingpourfilerouge/src/data/"
     demiLen=int(len(modelfinal)/2)
     modelList1 = [modelfinal[i] for i in range(demiLen)]
     modelList2 = [modelfinal[i] for i in range((demiLen+1),len(modelfinal))]
-    Thread1 = BestModelFinder(ListParamModel=modelList1,path=path_to_modele)
-    Thread2 = BestModelFinder(ListParamModel=modelList2,path=path_to_modele)
+    Thread1 = BestModelFinder(X=XtrainClean,Y=Ytrain,ListParamModel=modelList1,path=path_to_modele)
+    Thread2 = BestModelFinder(XtrainClean,Y=Ytrain,ListParamModel=modelList2,path=path_to_modele)
+
     print("Execute and save modele:")
-    Thread1.run(XtrainClean,Ytrain)
-    Thread2.run(XtrainClean,Ytrain)
+    Thread1.start()
+    Thread2.start()
+
+    Thread1.stop()
+    Thread2.stop()
