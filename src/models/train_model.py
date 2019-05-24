@@ -16,25 +16,25 @@ import os
 
 HOME_VAR="/home/arakotoarijaona/Bureau/arakotoarijaona/"
 
-model2 = [("tfidf",TfidfVectorizer()) , ("clfMultinomialNB",MultinomialNB())]
-param2={"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
-model1 = [("tfidf",TfidfVectorizer()) , ("clfLogistic",LogisticRegression())]
-param1={"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
-model6 = [("tfidf",TfidfVectorizer()) , ("clfSVM",LinearSVC())]
-param6={"clfSVM__C": [0.1, 1, 10, 100, 1000]}
-model9 = [("tfidf",TfidfVectorizer()) , ("clfrandomForest",RandomForestClassifier())]
-param9={"clfrandomForest__n_estimators": [200,500, 700]}
+#model2 = [("tfidf",TfidfVectorizer()) , ("clfMultinomialNB",MultinomialNB())]
+#param2={"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
+#model1 = [("tfidf",TfidfVectorizer()) , ("clfLogistic",LogisticRegression())]
+#param1={"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
+#model6 = [("tfidf",TfidfVectorizer()) , ("clfSVM",LinearSVC())]
+#param6={"clfSVM__C": [0.1, 1, 10, 100, 1000]}
+#model9 = [("tfidf",TfidfVectorizer()) , ("clfrandomForest",RandomForestClassifier())]
+#param9={"clfrandomForest__n_estimators": [200,500, 700]}
 
 
 
-model = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)), ("clfLogistic",LogisticRegression())]
-param={"w2v__model":["cbow","skipgram"],"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
-model3 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfMultinomialNB",MultinomialNB())]
-param3={"w2v__model":["cbow","skipgram"],"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
-model7 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfSVM",LinearSVC())]
-param7={"w2v__model":["cbow","skipgram"],"clfSVM__C":[0.1, 1, 10, 100, 1000]}
-model10 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfrandomForest",RandomForestClassifier())]
-param10={"w2v__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,500,700]}
+#model = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)), ("clfLogistic",LogisticRegression())]
+#param={"w2v__model":["cbow","skipgram"],"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
+#model3 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfMultinomialNB",MultinomialNB())]
+#param3={"w2v__model":["cbow","skipgram"],"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
+#model7 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfSVM",LinearSVC())]
+#param7={"w2v__model":["cbow","skipgram"],"clfSVM__C":[0.1, 1, 10, 100, 1000]}
+#model10 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfrandomForest",RandomForestClassifier())]
+#param10={"w2v__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,500,700]}
 
 
 
@@ -42,36 +42,22 @@ param10={"w2v__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,5
 ft_home =HOME_VAR+'textmining_with_structured_directory/data/fastText-0.2.0/fasttext'
 Input=HOME_VAR+"textmining_with_structured_directory/src/models/FastTestFolder/xtrain.txt"
 
-model4 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)),("clfMultinomialNB",MultinomialNB())]
-param4={"fastText__model":["cbow","skipgram"],"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
-model5 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)) ,("clfLogistic",LogisticRegression())]
-param5={"fastText__model":["cbow","skipgram"],"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
-model8 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)) ,("clfSVM",LinearSVC())]
-param8={"fastText__model":["cbow","skipgram"],"clfSVM__C": [0.1, 1, 10, 100, 1000]}
-model11 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)),("clfrandomForest",RandomForestClassifier())]
-param11={"fastText__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,500,700]}
+#model4 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)),("clfMultinomialNB",MultinomialNB())]
+#param4={"fastText__model":["cbow","skipgram"],"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
+#model5 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)) ,("clfLogistic",LogisticRegression())]
+#param5={"fastText__model":["cbow","skipgram"],"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
+#model8 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)) ,("clfSVM",LinearSVC())]
+#param8={"fastText__model":["cbow","skipgram"],"clfSVM__C": [0.1, 1, 10, 100, 1000]}
+#model11 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)),("clfrandomForest",RandomForestClassifier())]
+#param11={"fastText__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,500,700]}
 
 
 
 
 
-modelfinal=[(model,param),(model1,param1),(model2,param2),(model3,param3),(model4,param4),
-            (model5,param5),(model6,param6),(model7,param7),(model8,param8),(model9,param9),
-            (model10,param10),(model11,param11)]
-
-
-
-
-# def ma_fonction(X, Y, model, param, path=path_to_modele, cv = cv, n_jobs=3):
-#     pipeline = Pipeline(model)
-#     modele  = GridSearchCV(estimator = pipeline, param_grid = param, cv = cv, n_jobs=n_jobs)
-#     modele.fit(X,Y)
-#     modele_name="model_{}_{}.sav".format(model,param)
-#     pickle.dump( modele, open( path+modele_name, "wb" ) )
-      
-# for mod,par in modelfinal:
-#     ma_fonction(x_train,y_train,model=mod,param=par,path)
-
+#modelfinal=[(model,param),(model1,param1),(model2,param2),(model3,param3),(model4,param4),
+#            (model5,param5),(model6,param6),(model7,param7),(model8,param8),(model9,param9),
+#            (model10,param10),(model11,param11)]
 
 
 class BestModelFinder(Thread):
