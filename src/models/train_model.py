@@ -11,40 +11,45 @@ from threading import Thread
 from ClearTransformData import Cleardataset
 import pandas as pd
 import time
+import pickle
+import os
+
+HOME_VAR="/home/arakotoarijaona/Bureau/arakotoarijaona/"
 
 model2 = [("tfidf",TfidfVectorizer()) , ("clfMultinomialNB",MultinomialNB())]
-param2={"clfMultinomialNB__alpha":[1e-1,0.2,0.3,0.4,0.6,0.8,1,1.5,2,3,4,5,8,10]}
+param2={"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
 model1 = [("tfidf",TfidfVectorizer()) , ("clfLogistic",LogisticRegression())]
-param1={"clfLogistic__C": [1.00e-03, 4.64e-03, 2.15e-02, 1.00e-01, 4.64e-01, 2.15e+00, 1.00e+01, 4.64e+01, 2.15e+02, 1.00e+03]}
+param1={"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
 model6 = [("tfidf",TfidfVectorizer()) , ("clfSVM",LinearSVC())]
-param6={"clfSVM__C": [1.00e-03, 4.64e-03, 2.15e-02, 1.00e-01, 4.64e-01, 2.15e+00, 1.00e+01, 4.64e+01, 2.15e+02, 1.00e+03]}
+param6={"clfSVM__C": [0.1, 1, 10, 100, 1000]}
 model9 = [("tfidf",TfidfVectorizer()) , ("clfrandomForest",RandomForestClassifier())]
 param9={"clfrandomForest__n_estimators": [200,500, 700]}
 
 
 
 model = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)), ("clfLogistic",LogisticRegression())]
-param={"w2v__n_size":[100,150,300],"clfLogistic__C": [1.00e-03, 4.64e-03, 2.15e-02, 1.00e-01, 4.64e-01, 2.15e+00, 1.00e+01, 4.64e+01, 2.15e+02, 1.00e+03]}
-model3 = [("w2v", Embedding_Word2Vec(n_window = 5,n_min_count = 10,n_workers = 4)),("clfMultinomialNB",MultinomialNB())]
-param3={"w2v__n_size":[100,150,300],"clfMultinomialNB__alpha":[1e-1,0.2,0.3,0.4,0.6,0.8,1,1.5,2,3,4,5,8,10]}
-model7 = [("w2v", Embedding_Word2Vec(n_window = 5,n_min_count = 10,n_workers = 4)),("clfSVM",LinearSVC())]
-param7={"w2v__n_size":[100,150,300],"clfSVM__C":[1e-1,0.2,0.3,0.4,0.6,0.8,1,1.5,2,3,4,5,8,10]}
-model10 = [("w2v", Embedding_Word2Vec(n_window = 5,n_min_count = 10,n_workers = 4)),("clfrandomForest",RandomForestClassifier())]
-param10={"w2v__n_size":[100,150,300],"clfrandomForest__n_estimators":[200,500,700]}
+param={"w2v__model":["cbow","skipgram"],"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
+model3 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfMultinomialNB",MultinomialNB())]
+param3={"w2v__model":["cbow","skipgram"],"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
+model7 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfSVM",LinearSVC())]
+param7={"w2v__model":["cbow","skipgram"],"clfSVM__C":[0.1, 1, 10, 100, 1000]}
+model10 = [("w2v", Embedding_Word2Vec(n_size = 300,n_window = 5,n_min_count = 10,n_workers = 4)),("clfrandomForest",RandomForestClassifier())]
+param10={"w2v__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,500,700]}
 
 
 
-ft_home ='/home/tantely/fastText-0.2.0/fasttext'
-Input="/home/tantely/Documents/INSA_Rouen/Projet_Fil_Rouge2/textminingpourfilerouge/src/models/FastTestFolder/xtrain.txt"
 
-model4 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home)),("clfMultinomialNB",MultinomialNB())]
-param4={"fastText__size":[100,150,300],"fastText__model":["cbow","skipgram"],"clfMultinomialNB__alpha":[1e-1,0.2,0.3,0.4,0.6,0.8,1,1.5,2,3,4,5,8,10]}
-model5 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home)) ,("clfLogistic",LogisticRegression())]
-param5={"fastText__size":[100,150,300],"fastText__model":["cbow","skipgram"],"clfLogistic__C": [1.00e-03, 4.64e-03, 1.00e-01, 4.64e-01, 2.15e+00, 1.00e+01, 4.64e+01, 2.15e+02, 1.00e+03]}
-model8 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home)) ,("clfSVM",LinearSVC())]
-param8={"fastText__size":[100,150,300],"fastText__model":["cbow","skipgram"],"clfSVM__C": [1.00e-03, 4.64e-03, 1.00e-01, 4.64e-01, 2.15e+00, 1.00e+01, 4.64e+01, 2.15e+02, 1.00e+03]}
-model11 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home)),("clfrandomForest",RandomForestClassifier())]
-param11={"fastText__size":[100,150,300],"fastText__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,500,700]}
+ft_home =HOME_VAR+'textmining_with_structured_directory/data/fastText-0.2.0/fasttext'
+Input=HOME_VAR+"textmining_with_structured_directory/src/models/FastTestFolder/xtrain.txt"
+
+model4 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)),("clfMultinomialNB",MultinomialNB())]
+param4={"fastText__model":["cbow","skipgram"],"clfMultinomialNB__alpha":[0.5, 0.7, 0.9, 1.1, 1.3, 1.5]}
+model5 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)) ,("clfLogistic",LogisticRegression())]
+param5={"fastText__model":["cbow","skipgram"],"clfLogistic__C": [0.001,0.01,0.1,1,10,100,1000]}
+model8 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)) ,("clfSVM",LinearSVC())]
+param8={"fastText__model":["cbow","skipgram"],"clfSVM__C": [0.1, 1, 10, 100, 1000]}
+model11 = [("fastText",FastTextTransformer(inputFile=Input,ft_home=ft_home,size=300)),("clfrandomForest",RandomForestClassifier())]
+param11={"fastText__model":["cbow","skipgram"],"clfrandomForest__n_estimators":[200,500,700]}
 
 
 
@@ -89,8 +94,10 @@ class BestModelFinder(Thread):
         t0=time.time()
         modele.fit(X,Y)
         print("Model lauched successfull. Execution times:{}".format(time.time()-t0))
-        modele_name="model_{}_{}.sav".format(model,param)
-        pickle.dump( modele, open( path+modele_name, "wb" ) )
+        word_transformer=model[0][0]
+        name_model=model[1][0]
+        modele_name="model_{}_{}.sav".format(word_transformer,name_model)
+        pickle.dump( modele, open( self.path+modele_name, "wb" ) )
 
     def run(self):
         cleardata=Cleardataset()
@@ -99,23 +106,31 @@ class BestModelFinder(Thread):
 
 
 
-
 if __name__=="__main__":
-
-    trainData=pd.read_csv("../../data/TrainData.csv")
+    print("Debut du programme")
+    
     #testData=pd.read_csv("../../data/TestData.csv")
-    Xtrain,Ytrain=trainData.description,trainData.Labels
     print("Clear data")
     t1=time.time()
-    XtrainClean=Cleardataset().fit(Xtrain).transform(Xtrain)
-    print("data cleared in:{}".format(time.time()-t1))
     
-    path_to_modele="/home/tantely/Documents/INSA_Rouen/Projet_Fil_Rouge2/textminingpourfilerouge/src/data/"
+    if not os.path.exists("../../data/TrainDataClean.csv"):
+        trainData=pd.read_csv("../../data/TrainData.csv")
+        XtrainClean=Cleardataset().fit(trainData.description).transform(trainData.description)
+        trainData.description=XtrainClean
+        trainData.to_csv("../../data/TrainDataClean.csv",index=False)
+    else:
+        XtrainClean=pd.read_csv("../../data/TrainDataClean.csv")
+
+    print("data cleared in:{}".format(time.time()-t1))
+   	    
+    path_to_modele=HOME_VAR+"textmining_with_structured_directory/src/data/"
     demiLen=int(len(modelfinal)/2)
     modelList1 = [modelfinal[i] for i in range(demiLen)]
     modelList2 = [modelfinal[i] for i in range((demiLen+1),len(modelfinal))]
-    Thread1 = BestModelFinder(X=XtrainClean,Y=Ytrain,ListParamModel=modelList1,path=path_to_modele)
-    Thread2 = BestModelFinder(XtrainClean,Y=Ytrain,ListParamModel=modelList2,path=path_to_modele)
+
+   
+    Thread1 = BestModelFinder(X=XtrainClean.description,Y=XtrainClean.Labels,ListParamModel=modelList1,path=path_to_modele)
+    Thread2 = BestModelFinder(XtrainClean.description,Y=XtrainClean.Labels,ListParamModel=modelList2,path=path_to_modele)
 
     print("Execute and save modele:")
     Thread1.start()
