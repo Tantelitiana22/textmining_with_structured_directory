@@ -1,4 +1,7 @@
 import sys
+import time
+import os
+import pandas as pd
 sys.path.append('..')
 
 
@@ -6,6 +9,7 @@ from gloveLocal.glove import build_vocab,build_cooccur,train_glove
 from gloveLocal.evaluate import make_id2word,merge_main_context
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
+import pickle
 
 class GloveTransformer:
 
@@ -51,21 +55,28 @@ class GloveTransformer:
         
 if __name__=="__main__":
     
-    test_corpus = ("""human interface computer                                                                                                                                                            
-    survey user computer system response time                                                                                                                                                             
-    eps user interface system                                                                                                                                                                             
-    system human system eps                                                                                                                                                                               
-    user response time                                                                                                                                                                                    
-    trees                                                                                                                                                                                                 
-    graph trees                                                                                                                                                                                           
-    graph minors trees                                                                                                                                                                                    
-    graph minors survey                                                                                                                                                                                   
-    I like graph and stuff                                                                                                                                                                                
-    I like trees and stuff                                                                                                                                                                                
-    Sometimes I build a graph                                                                                                                                                                             
-    Sometimes I build trees""").split("\n")
+    print("Debut du programme")
+    
+    #testData=pd.read_csv("../../data/TestData.csv")
+    print("Clear data")
+    t1=time.time()
+    
+    
+    if not os.path.exists("../../data/TrainDataClean.csv"):
+        trainData=pd.read_csv("../../data/TrainData.csv")
+        XtrainClean=Cleardataset().fit(trainData.resume).transform(trainData.resume)
+        XtrainCleanPrim=Cleardataset().fit(trainData.description).transform(trainData.description)
+        trainData.resume=XtrainClean
+        trainData.description=XtrainCleanPrim
+        trainData.to_csv("../../data/TrainDataClean.csv",index=False)
+    else:
+         trainData=pd.read_csv("../../data/TrainDataClean.csv")
 
+    print("data cleared in:{}".format(time.time()-t1))
     testclass=GloveTransformer()
     
     #print(testclass.word_representation(test_corpus))
-    print(testclass.fit(test_corpus).transform(test_corpus))
+    res=testclass.fit(trainData.resume)
+    
+    pickle.dump( res, open( "../data/Embedding_dataText/resume_trainedDataGlove.sav", "wb" ) )
+    
