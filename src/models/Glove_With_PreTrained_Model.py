@@ -1,14 +1,24 @@
 import numpy as np
 import pandas as pd
 import time
+import os
+import pickle
 from threading import Thread
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import LinearSVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+
 
 """
 Ce fichier a pour usage d'entrainer un modèle avec un glove pre-entrainer
 """
 
-Path_to_Glove_Trained = "../data/model_embedding_resum/glove.6B.300d.txt"
+Path_to_Glove_Trained = "../data/Embedding_dataText/glove.6B.300d.txt"
 DIMGLOVE=300
 
 
@@ -52,8 +62,8 @@ def transformX(X):
     return(XresMinMax)
 
 
-def trainModelGlove(X,Y,model,path,cv,n_jobs):
-
+def trainModelGlove(X,Y,model,param,path,cv,n_jobs):
+    print("Modelx {}".format(model))
     modele  = GridSearchCV(estimator = model[0][1], param_grid = param, cv=cv,n_jobs=n_jobs)
     print("Model lauch:{}_{}".format(model,param))
     t0=time.time()
@@ -64,7 +74,7 @@ def trainModelGlove(X,Y,model,path,cv,n_jobs):
     word_transformer = "Glove"
     name_model = model[0][0]
     modele_name = "model_{}_{}.sav".format(word_transformer,name_model)
-    pickle.dump( modele, open( self.path+modele_name, "wb" ) )
+    pickle.dump( modele, open( path+modele_name, "wb" ) )
 
  
 
@@ -87,18 +97,13 @@ class BestModelFinder(Thread):
 
 
     def run(self):
-        cleardata=Cleardataset()
+        
         for mod,par in self.ListParamModel:
-            trainModelGlove(X=self.X,Y=self.Y,model=self.ListParamModel,path=self.path,cv=self.cv,n_jobs=self.n_jobs)
-
-
-
-
-
+            trainModelGlove(X=self.X,Y=self.Y,model=mod,param=par,path=self.path,cv=self.cv,n_jobs=self.n_jobs)
 
 
 if __name__=="__main__":
-       print("Debut du programme")
+    print("Debut du programme")
     
     #testData=pd.read_csv("../../data/TestData.csv")
     print("Clear data")
@@ -123,8 +128,8 @@ if __name__=="__main__":
     modelList2 = [modelfinal[i] for i in range((demiLen),len(modelfinal))]
 
     
-    Thread1 = BestModelFinder(X= trainData.resume,Y= trainData.Labels,ListParamModel=modelList1,path=path_to_modele)
-    Thread2 = BestModelFinder(X= trainData.resume,Y= trainData.Labels,ListParamModel=modelList2,path=path_to_modele)
+    Thread1 = BestModelFinder(X= trainData.description,Y= trainData.Labels,ListParamModel=modelList1,path=path_to_modele)
+    Thread2 = BestModelFinder(X= trainData.description,Y= trainData.Labels,ListParamModel=modelList2,path=path_to_modele)
 
     print("Execute and save modele:")
 
