@@ -2,11 +2,11 @@ import sys
 import time
 import os
 import pandas as pd
-sys.path.append('..')
+sys.path.append('../')
 
 
-from gloveLocal.glove import build_vocab,build_cooccur,train_glove
-from gloveLocal.evaluate import make_id2word,merge_main_context
+from .gloveLocal.glove import build_vocab,build_cooccur,train_glove
+from .gloveLocal.evaluate import make_id2word,merge_main_context
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pickle
@@ -39,6 +39,7 @@ class GloveTransformer:
     def __word_averaging(self, X):
         Corresp={self.id2word[i]:self.W[i,:] for i in range(self.W.shape[0])}
         result= [np.mean([Corresp[u] for u in x.split() if u in Corresp.keys()],axis=0) for x in X]
+        result = [x if not np.isnan(np.sum(x)) else np.zeros(self.vector_size) for x in result]
         return np.asarray(result)
         
         

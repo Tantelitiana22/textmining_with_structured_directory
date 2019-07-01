@@ -18,7 +18,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 Ce fichier a pour usage d'entrainer un modèle avec un glove pre-entrainer
 """
 
-Path_to_Glove_Trained = "../data/Embedding_dataText/glove.6B.300d.txt"
+Path_to_Glove_Trained = "../data/model_embedding_resum/glove.6B.300d.txt"
 DIMGLOVE=300
 
 
@@ -37,7 +37,7 @@ modelfinal=[(model1,param1),(model2,param2),(model3,param3),(model4,param4),(mod
 
 
 
-def Embedd_vector():
+def Embedd_vector(Path_to_Glove_Trained=Path_to_Glove_Trained):
     
     f = open(Path_to_Glove_Trained,"r")
     dict_Glove={}
@@ -47,9 +47,9 @@ def Embedd_vector():
 
     return dict_Glove
 
-def transformX(X):
+def transformX(X,Path_to_Glove_Trained=Path_to_Glove_Trained):
     
-    Corresp= Embedd_vector()    
+    Corresp= Embedd_vector(Path_to_Glove_Trained=Path_to_Glove_Trained)    
     result = [np.mean([Corresp[u] for u in x.split() if u in Corresp.keys()],axis=0) for x in X]
     
     result = [x if not np.isnan(np.sum(x)) else np.zeros(self.vector_size) for x in result]
@@ -62,13 +62,13 @@ def transformX(X):
     return(XresMinMax)
 
 
-def trainModelGlove(X,Y,model,param,path,cv,n_jobs):
+def trainModelGlove(X,Y,model,param,path,cv,n_jobs,Path_to_Glove_Trained=Path_to_Glove_Trained):
     print("Modelx {}".format(model))
     modele  = GridSearchCV(estimator = model[0][1], param_grid = param, cv=cv,n_jobs=n_jobs)
     print("Model lauch:{}_{}".format(model,param))
     t0=time.time()
 
-    X_transformed = transformX(X)
+    X_transformed = transformX(X,Path_to_Glove_Trained=Path_to_Glove_Trained)
     modele.fit(X_transformed,Y)
     print("Model lauched successfull. Execution times:{}".format(time.time()-t0))
     word_transformer = "Glove"
@@ -86,7 +86,7 @@ class BestModelFinder(Thread):
 
     """Model with threading to parallelize your luncher."""
 
-    def __init__(self,X,Y,ListParamModel,path,cv=5,n_jobs=2):
+    def __init__(self,X,Y,ListParamModel,path,cv=5,n_jobs=2,Path_to_Glove_Trained=Path_to_Glove_Trained):
         Thread.__init__(self)
         self.X=X
         self.Y=Y
@@ -94,12 +94,12 @@ class BestModelFinder(Thread):
         self.path=path
         self.cv=cv
         self.n_jobs=n_jobs
-
+        self.Path_to_Glove_Trained=Path_to_Glove_Trained
 
     def run(self):
         
         for mod,par in self.ListParamModel:
-            trainModelGlove(X=self.X,Y=self.Y,model=mod,param=par,path=self.path,cv=self.cv,n_jobs=self.n_jobs)
+            trainModelGlove(X=self.X,Y=self.Y,model=mod,param=par,path=self.path,cv=self.cv,n_jobs=self.n_jobs,Path_to_Glove_Trained=self.Path_to_Glove_Trained)
 
 
 if __name__=="__main__":

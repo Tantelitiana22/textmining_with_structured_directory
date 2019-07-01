@@ -4,7 +4,10 @@ import string
 import numpy as np
 from nltk.corpus import stopwords
 import re
-
+import multiprocessing
+from multiprocessing import Pool
+import pandas as pd
+import numpy as np
 
 class Cleardataset:
     '''
@@ -36,7 +39,13 @@ class Cleardataset:
 
 
 
-    
+def parallelize_dataframe(df, func,num_partitions = 5000,num_cores = multiprocessing.cpu_count()):
+    df_split = np.array_split(df, num_partitions)
+    pool = Pool(num_cores)
+    df = pd.concat(pool.map(func, df_split))
+    pool.close()
+    pool.join()
+    return df    
 
 
 
