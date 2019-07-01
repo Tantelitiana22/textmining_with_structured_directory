@@ -137,18 +137,18 @@ class UploadData(Frame):
         progress.grid(column=0, row=2)
 
         progress['value'] = 0
-        progress.update_idletasks()
+        progress.update()
     
         progress['value'] = 10
-        subWindow.update_idletasks()
+        subWindow.update()
         classClear =  Cleardataset()
         clearResumedata = parallelize_dataframe(dataframe.resume,classClear.transform)
         progress['value'] = 60
-        subWindow.update_idletasks() 
+        subWindow.update() 
         Labels = bestModel.predict(clearResumedata)
         dataframe.insert(loc=0, column='Labels', value=Labels)
         progress['value'] = 100
-        subWindow.update_idletasks() 
+        subWindow.update() 
         progress.destroy()
         subWindow.destroy()
         
