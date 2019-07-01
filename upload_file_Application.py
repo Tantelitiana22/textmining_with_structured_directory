@@ -353,8 +353,6 @@ if __name__=="__main__":
     root =Tk()
     root.title("Tools for job prediction")
     root.geometry("800x600")
-    icon = PhotoImage("th.jpeg")
-    root.tk.call('wm', 'iconphoto', root._w, icon)
    
     app = UploadData(root)
     root.mainloop()
