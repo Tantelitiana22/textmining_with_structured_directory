@@ -14,7 +14,9 @@ To project our corpus in a numerical dimension, one test some word embedding met
    - Naive Bayes
    - Gradient Boosting
    - Random Forest.
+   
 One also tested deep learning models by using a sequential method as word embedding. A specialy:
+
    - Neural Network with 2 layers.
    - Convolutional Neural Network.
    - LTSM.
