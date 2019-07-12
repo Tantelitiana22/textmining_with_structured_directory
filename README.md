@@ -3,10 +3,12 @@ TextMiningPourFileRouge
 
 This project aim to predict job offer label, and to understand how to use several approach in NLP field.
 To project our corpus in a numerical dimension, one test some word embedding method like:
+
     - TF-IDF 
     - Word2Vec
     - fastText
     - Glove
+    
    Afert the projection of our corpus in a numerical dimension, one applied with the matrix projected a machine learning modeles
    like:
    - Logistic regression
