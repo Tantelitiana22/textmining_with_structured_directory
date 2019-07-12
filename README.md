@@ -1,8 +1,36 @@
 TextMiningPourFileRouge
 ==============================
 
-This project aim to predict job offer label, and to understand how to use several approach in NLP field
+This project aim to predict job offer label, and to understand how to use several approach in NLP field.
+To project our corpus in a numerical dimension, one test some word embedding method like:
+    - TF-IDF 
+    - Word2Vec
+    - fastText
+    - Glove
+   Afert the projection of our corpus in a numerical dimension, one applied with the matrix projected a machine learning modeles
+   like:
+   - Logistic regression
+   - Linear SVM 
+   - Naive Bayes
+   - Gradient Boosting
+   - Random Forest.
+One also tested deep learning models by using a sequential method as word embedding. A specialy:
+   - Neural Network with 2 layers.
+   - Convolutional Neural Network.
+   - LTSM.
+  For all word embedding+models we tested, the best is TF-IDF+Logistic regression. After choising the best model, one use it 
+  in a little and simple application  we created with python. The biggest default of this application the fact that it only
+  work with a very specific database.  To lauch the application, you have first to install the requirements package by doing:
+  ```python
+pip install -r requirements.txt
+print s
+```
+After you can lauch the file named  upload_file_Application.py by doing the next command line:
 
+ ```python
+python  upload_file_Application.py
+```
+A window will open, and to test the application, you can upload data in jeu_test file named UNLabeledTestdata.csv to test. 
 Project Organization
 ------------
 
