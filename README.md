@@ -18,6 +18,7 @@ One also tested deep learning models by using a sequential method as word embedd
    - Neural Network with 2 layers.
    - Convolutional Neural Network.
    - LTSM.
+   
   For all word embedding+models we tested, the best is TF-IDF+Logistic regression. After choising the best model, one use it 
   in a little and simple application  we created with python. The biggest default of this application the fact that it only
   work with a very specific database.  To lauch the application, you have first to install the requirements package by doing:
