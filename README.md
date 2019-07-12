@@ -23,7 +23,6 @@ One also tested deep learning models by using a sequential method as word embedd
   work with a very specific database.  To lauch the application, you have first to install the requirements package by doing:
   ```python
 pip install -r requirements.txt
-print s
 ```
 After you can lauch the file named  upload_file_Application.py by doing the next command line:
 
